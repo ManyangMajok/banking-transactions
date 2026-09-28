@@ -156,3 +156,13 @@ Track T01–T17 and each concurrency scenario from the build plan.
 ### BUG-004 — dialog style edit syntax — closed
 - Severity: medium, discovered by TypeScript before release. An overly broad class-removal expression removed a closing quote.
 - Replaced dialog component styling explicitly while retaining Radix primitives. `npm run types` exit 0 and `npm run build` exit 0 after correction. No financial code affected.
+
+### 2026-09-28 D08 — expanded verification
+- MySQL concurrency rerun: all six scenarios and final reconciliation passed, exit 0, engine 8.4.11.
+- Added HTTP full-sequence and pagination tests; `php artisan test --filter=BankingTest`: 15 tests / 159 assertions passed.
+- Database sessions now explicitly set UTC and REPEATABLE READ; test asserts session timezone. Initial generated demonstration records predate this connection correction; fresh installations initialize correctly in UTC.
+- Browser checks: 375px account detail (scrollWidth=375), mobile directory, empty-search state, Radix focus wrap (Shift+Tab remains inside dialog), Escape closes and restores Deposit trigger. Tokenless browser POST returned 419 Page Expired; temporary fixture removed.
+- Read-only inspection confirmed seeded loan principal, outstanding amount, linked history reference and disbursement date render.
+- Screenshot files: docs/screenshots/account-detail.png, account-mobile.png, accounts-mobile.png, loan-account.png, csrf-rejection.png. Full-page capture can show stitching artifacts; viewport captures are preferred for final delivery.
+- Local commit f147969 contains implementation. Managed clean-install worktree failed because sandbox ownership differed; created a separate local clone at .runtime/fresh-clone using command-scoped safe.directory exceptions. No global Git settings altered.
+- `npm ci` in fresh clone: exit 0, 438 packages, audit zero vulnerabilities. Composer clean installation in progress.

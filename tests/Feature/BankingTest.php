@@ -12,6 +12,7 @@ use App\Services\BankingService;
 use App\Services\MoneyParser;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -273,5 +274,43 @@ class BankingTest extends TestCase
         $this->delete('/accounts/1')->assertRedirect('/login');
         $this->get('/register')->assertNotFound();
         $this->post('/register')->assertNotFound();
+    }
+
+    public function test_http_demo_sequence_uses_authenticated_routes_and_fixed_loan_amount(): void
+    {
+        $a = $this->account('HTTP Demo A');
+        $b = $this->account('HTTP Demo B');
+        $payload = fn (string $amount) => ['amount' => $amount, 'idempotency_key' => (string) Str::uuid()];
+        $this->post('/accounts/'.$a->id.'/deposits', $payload('5000'))->assertSessionHasNoErrors();
+        $this->post('/accounts/'.$a->id.'/withdrawals', $payload('1000'))->assertSessionHasNoErrors();
+        $transfer = [...$payload('1500'), 'source_account_id' => $a->id, 'destination_account_id' => $b->id];
+        $this->post('/transfers', $transfer)->assertSessionHasNoErrors();
+        $this->post('/transfers', $transfer)->assertSessionHasNoErrors();
+        $this->assertSame(250000, $a->fresh()->balance_minor);
+        $this->assertSame(150000, $b->fresh()->balance_minor);
+        $this->post('/accounts/'.$a->id.'/withdrawals', $payload('5000'))->assertSessionHasErrors('operation');
+        // A malicious client-supplied principal cannot change the fixed credit.
+        $this->post('/accounts/'.$a->id.'/loan', $payload('99999999'))->assertSessionHasNoErrors();
+        $this->assertSame(1250000, $a->fresh()->balance_minor);
+        $this->assertSame(1000000, $a->fresh()->loan->outstanding_minor);
+        $this->post('/accounts/'.$a->id.'/loan', $payload('10000'))->assertSessionHasErrors('operation');
+        $this->assertSame(4, Transaction::count());
+        $this->assertSame([], app(AccountReconciliationService::class)->mismatches());
+        $empty = $this->account('Dormant HTTP');
+        $empty->update(['created_at' => now()->subYears(2)]);
+        $this->delete('/accounts/'.$empty->id)->assertRedirect('/accounts');
+        $this->assertSoftDeleted($empty);
+    }
+
+    public function test_account_and_history_pagination_and_database_timezone(): void
+    {
+        $a = $this->account();
+        for ($i = 0; $i < 11; $i++) {
+            $this->account('Pagination '.$i);
+            $this->move('deposit', null, $a->id, 1);
+        }
+        $this->get('/accounts')->assertInertia(fn ($page) => $page->has('accounts.data', 10)->where('accounts.last_page', 2));
+        $this->get('/accounts/'.$a->id.'?page=2')->assertInertia(fn ($page) => $page->has('history.data', 1)->where('history.total', 11));
+        $this->assertSame('+00:00', DB::selectOne('SELECT @@session.time_zone AS zone')->zone);
     }
 }

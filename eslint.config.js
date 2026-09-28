@@ -42,4 +42,3 @@ export default [
     },
     prettier, // Turn off all rules that might conflict with Prettier
 ];
-
