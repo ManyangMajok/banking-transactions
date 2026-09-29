@@ -10,7 +10,7 @@ Route::middleware(['auth'])->group(function () {
     Route::redirect('dashboard', '/accounts')->name('dashboard');
     Route::get('/accounts', [BankAccountController::class, 'index'])->name('accounts.index');
     Route::post('/accounts', [BankAccountController::class, 'store'])->name('accounts.store');
-    Route::get('/accounts/{account}', [BankAccountController::class, 'show'])->name('accounts.show');
+    Route::get('/accounts/{account}', [BankAccountController::class, 'show'])->withTrashed()->name('accounts.show');
     Route::delete('/accounts/{account}', [BankAccountController::class, 'destroy'])->name('accounts.destroy');
     Route::post('/accounts/{account}/deposits', MoneyOperationController::class)->name('accounts.deposits');
     Route::post('/accounts/{account}/withdrawals', MoneyOperationController::class)->name('accounts.withdrawals');

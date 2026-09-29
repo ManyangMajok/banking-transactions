@@ -31,16 +31,28 @@ export default function Detail({
     const form = useForm({ operation: '' });
     return (
         <Shell title={account.customer_name}>
-            <Link href="/accounts" className="mb-6 inline-flex items-center gap-2 text-sm text-slate-600">
-                <ArrowLeft aria-hidden className="size-4" /> All accounts
+            <Link
+                href={account.deleted_at ? '/accounts?view=archived' : '/accounts'}
+                className="mb-6 inline-flex items-center gap-2 text-sm text-slate-600"
+            >
+                <ArrowLeft aria-hidden className="size-4" /> {account.deleted_at ? 'Archived accounts' : 'All accounts'}
             </Link>
             <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
                 <div>
                     <h1 className="text-3xl font-semibold text-balance">{account.customer_name}</h1>
                     <p className="mt-2 text-sm break-all text-slate-500">{account.account_number}</p>
                 </div>
-                <Status dormant={account.dormant} />
+                {account.deleted_at ? (
+                    <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Archived</span>
+                ) : (
+                    <Status dormant={account.dormant} />
+                )}
             </div>
+            {account.deleted_at && (
+                <p className="mb-6 rounded-xl border bg-white p-4 text-sm text-slate-600">
+                    Archived on {date(account.deleted_at)} EAT. This account is read-only. All recorded transactions are retained below.
+                </p>
+            )}
             <div className="mb-8 grid gap-6 lg:grid-cols-3">
                 <section className="rounded-xl border bg-white p-6 sm:p-8 lg:col-span-2">
                     <div className="flex items-center justify-between text-sm text-slate-500">
@@ -53,11 +65,13 @@ export default function Detail({
                             ? `Last movement: ${date(account.last_activity_at)} EAT`
                             : `No movements · Opened ${date(account.created_at)} EAT`}
                     </p>
-                    <div className="mt-8 flex flex-wrap gap-3">
-                        {(['deposit', 'withdrawal', 'transfer'] as const).map((kind) => (
-                            <Operation key={kind} kind={kind} account={account} recipients={recipients} />
-                        ))}
-                    </div>
+                    {!account.deleted_at && (
+                        <div className="mt-8 flex flex-wrap gap-3">
+                            {(['deposit', 'withdrawal', 'transfer'] as const).map((kind) => (
+                                <Operation key={kind} kind={kind} account={account} recipients={recipients} />
+                            ))}
+                        </div>
+                    )}
                 </section>
                 <section className="rounded-xl border bg-white p-6">
                     <h2 className="font-semibold">Demo loan</h2>
@@ -74,6 +88,8 @@ export default function Detail({
                                 One demo loan per account. No repayments.
                             </p>
                         </>
+                    ) : account.deleted_at ? (
+                        <p className="mt-4 text-sm text-slate-500">No loan was recorded for this account.</p>
                     ) : (
                         <>
                             <p className="mt-4 text-2xl font-semibold tabular-nums">KES 10,000.00</p>
@@ -126,36 +142,42 @@ export default function Detail({
                     </ul>
                 ) : (
                     <div className="p-10 text-center">
-                        <h3 className="font-medium">No transactions yet</h3>
-                        <p className="mt-2 text-sm text-slate-500">Make a deposit to record the first movement.</p>
+                        <h3 className="font-medium">{account.deleted_at ? 'No recorded transactions' : 'No transactions yet'}</h3>
+                        <p className="mt-2 text-sm text-slate-500">
+                            {account.deleted_at
+                                ? 'This account had no recorded money movements before it was archived.'
+                                : 'Make a deposit to record the first movement.'}
+                        </p>
                     </div>
                 )}
                 <Pagination page={history} />
             </section>
-            <section className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-xl border border-dashed p-6">
-                <div>
-                    <h2 className="text-sm font-semibold">Close dormant account</h2>
-                    <p className="mt-1 max-w-xl text-sm text-slate-500">
-                        {account.deletion_reason ??
-                            'Eligible: dormant for 12 months, zero balance and no outstanding loan. History will be retained.'}
-                    </p>
-                    <p role="alert" className="mt-2 text-sm text-red-700">
-                        {form.errors.operation}
-                    </p>
-                </div>
-                <Confirmation
-                    title="Delete this dormant account?"
-                    description={`${account.customer_name} (${account.account_number}) will be removed from the account directory. Historical records remain preserved.`}
-                    open={deleting}
-                    onOpenChange={setDeleting}
-                    processing={form.processing}
-                    onConfirm={() => form.delete(`/accounts/${account.id}`, { onError: () => setDeleting(false) })}
-                >
-                    <Button variant="outline" disabled={!!account.deletion_reason}>
-                        Delete account
-                    </Button>
-                </Confirmation>
-            </section>
+            {!account.deleted_at && (
+                <section className="mt-8 flex flex-wrap items-center justify-between gap-5 rounded-xl border border-dashed p-6">
+                    <div>
+                        <h2 className="text-sm font-semibold">Close dormant account</h2>
+                        <p className="mt-1 max-w-xl text-sm text-slate-500">
+                            {account.deletion_reason ??
+                                'Eligible: dormant for 12 months, zero balance and no outstanding loan. History will be retained.'}
+                        </p>
+                        <p role="alert" className="mt-2 text-sm text-red-700">
+                            {form.errors.operation}
+                        </p>
+                    </div>
+                    <Confirmation
+                        title="Delete this dormant account?"
+                        description={`${account.customer_name} (${account.account_number}) will be removed from the account directory. Historical records remain preserved.`}
+                        open={deleting}
+                        onOpenChange={setDeleting}
+                        processing={form.processing}
+                        onConfirm={() => form.delete(`/accounts/${account.id}`, { onError: () => setDeleting(false) })}
+                    >
+                        <Button variant="outline" disabled={!!account.deletion_reason}>
+                            Delete account
+                        </Button>
+                    </Confirmation>
+                </section>
+            )}
         </Shell>
     );
 }

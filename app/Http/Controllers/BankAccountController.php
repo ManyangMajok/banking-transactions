@@ -13,12 +13,13 @@ class BankAccountController extends Controller
 {
     public function index(Request $request)
     {
-        $request->validate(['search' => ['nullable', 'string', 'max:120']]);
+        $request->validate(['search' => ['nullable', 'string', 'max:120'], 'view' => ['nullable', 'in:open,archived']]);
+        $view = $request->input('view', 'open');
         $search = $request->string('search')->trim()->toString();
-        $accounts = BankAccount::with('loan')->when($search !== '', fn ($q) => $q->where(fn ($q) => $q->where('customer_name', 'like', '%'.$search.'%')->orWhere('account_number', 'like', '%'.$search.'%')))
+        $accounts = BankAccount::with('loan')->when($view === 'archived', fn ($q) => $q->onlyTrashed())->when($search !== '', fn ($q) => $q->where(fn ($q) => $q->where('customer_name', 'like', '%'.$search.'%')->orWhere('account_number', 'like', '%'.$search.'%')))
             ->latest('id')->paginate(10)->withQueryString()->through(fn ($a) => $a->display());
 
-        return Inertia::render('banking/accounts', ['accounts' => $accounts, 'search' => $search,
+        return Inertia::render('banking/accounts', ['accounts' => $accounts, 'search' => $search, 'view' => $view,
             'summary' => ['count' => BankAccount::count(), 'balance_minor' => (int) BankAccount::sum('balance_minor')]]);
     }
 
@@ -37,7 +38,7 @@ class BankAccountController extends Controller
             ->latest('id')->paginate(10);
 
         return Inertia::render('banking/detail', ['account' => $account->display(), 'loan' => $account->loan,
-            'history' => $history, 'recipients' => BankAccount::whereKeyNot($account->id)->orderBy('customer_name')->get(['id', 'customer_name', 'account_number'])]);
+            'history' => $history, 'recipients' => $account->trashed() ? [] : BankAccount::whereKeyNot($account->id)->orderBy('customer_name')->get(['id', 'customer_name', 'account_number'])]);
     }
 
     public function destroy(int $account, AccountService $service)

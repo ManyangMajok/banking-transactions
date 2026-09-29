@@ -166,3 +166,16 @@ Track T01–T17 and each concurrency scenario from the build plan.
 - Screenshot files: docs/screenshots/account-detail.png, account-mobile.png, accounts-mobile.png, loan-account.png, csrf-rejection.png. Full-page capture can show stitching artifacts; viewport captures are preferred for final delivery.
 - Local commit f147969 contains implementation. Managed clean-install worktree failed because sandbox ownership differed; created a separate local clone at .runtime/fresh-clone using command-scoped safe.directory exceptions. No global Git settings altered.
 - `npm ci` in fresh clone: exit 0, 438 packages, audit zero vulnerabilities. Composer clean installation in progress.
+
+### 2026-09-29 — user acceptance and archived-history correction
+- User reports all 12 manual browser checks passed, including deleting Dalia. This is user-reported evidence, not agent-operated browser execution.
+- BUG-005 (high, in_progress): deleted account rows/history are preserved, but default route binding and directory scope prevent staff opening deleted-account history. Add searchable Archived accounts directory and read-only detail, retaining all write restrictions. No development data reset.
+
+### 2026-09-29 BUG-005 — archived history access — closed
+- Added Open accounts / Archived accounts navigation, archive-scoped name/number search and pagination, and View history links.
+- GET account detail now includes soft-deleted accounts for authenticated staff. Archived details show deletion timestamp and retained history; deposit/withdraw/transfer/loan/delete controls are absent. Existing service locks and deleted-account rejection remain intact.
+- Files: routes/web.php; app/Http/Controllers/BankAccountController.php; app/Models/BankAccount.php; resources/js/pages/banking/{accounts,detail,shared}.tsx; tests/Feature/ArchivedAccountsTest.php; README.md.
+- `php artisan test --filter=ArchivedAccountsTest`: 1 passed, 54 assertions. Exercises funded-then-drained archived history, list filtering/search, access control and rejection of archived financial writes.
+- `php vendor/bin/pint`: passed; `npm run types`: passed; `npm run build`: passed (2035 modules). No development reset or customer movement performed.
+- Read-only live check: Dalia id=4, deleted_at=2026-09-29T08:12:39Z, balance=0, transaction count=0. Her seeded account never had money movements. `php artisan banking:reconcile`: zero mismatches including archived accounts.
+- User-reported completion of all 12 manual checks retained above; archived-history UI is new in this correction.

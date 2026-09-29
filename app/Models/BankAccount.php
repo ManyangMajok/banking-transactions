@@ -44,7 +44,7 @@ class BankAccount extends Model
 
     public function display(): array
     {
-        return [...$this->only('id', 'account_number', 'customer_name', 'balance_minor', 'last_activity_at', 'created_at'),
+        return [...$this->only('id', 'account_number', 'customer_name', 'balance_minor', 'last_activity_at', 'created_at', 'deleted_at'),
             'dormant' => $this->dormant(), 'deletion_reason' => $this->deletionReason()];
     }
 }

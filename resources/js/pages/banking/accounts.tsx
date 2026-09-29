@@ -11,9 +11,11 @@ export default function Accounts({
     accounts,
     search,
     summary,
+    view,
 }: {
     accounts: PageData<Account>;
     search: string;
+    view: 'open' | 'archived';
     summary: { count: number; balance_minor: number };
 }) {
     const [query, setQuery] = useState(search);
@@ -90,12 +92,24 @@ export default function Accounts({
                 </div>
             </div>
             <section className="overflow-hidden rounded-xl border bg-white" aria-label="Customer account directory">
+                <nav aria-label="Account views" className="flex flex-wrap gap-3 border-b p-5">
+                    <Button asChild variant={view === 'open' ? 'default' : 'outline'}>
+                        <Link href="/accounts" aria-current={view === 'open' ? 'page' : undefined}>
+                            Open accounts
+                        </Link>
+                    </Button>
+                    <Button asChild variant={view === 'archived' ? 'default' : 'outline'}>
+                        <Link href="/accounts?view=archived" aria-current={view === 'archived' ? 'page' : undefined}>
+                            Archived accounts
+                        </Link>
+                    </Button>
+                </nav>
                 <div className="flex flex-wrap items-center justify-between gap-4 border-b p-5">
-                    <h2 className="font-semibold">Account directory</h2>
+                    <h2 className="font-semibold">{view === 'archived' ? 'Archived accounts · retained history' : 'Account directory'}</h2>
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
-                            router.get('/accounts', { search: query }, { preserveState: true });
+                            router.get('/accounts', { search: query, view }, { preserveState: true });
                         }}
                         className="flex w-full gap-2 sm:w-auto"
                     >
@@ -132,14 +146,18 @@ export default function Accounts({
                                     </div>
                                     <p className="font-medium tabular-nums md:col-span-3">{money(account.balance_minor)}</p>
                                     <div className="md:col-span-2">
-                                        <Status dormant={account.dormant} />
+                                        {account.deleted_at ? (
+                                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">Archived</span>
+                                        ) : (
+                                            <Status dormant={account.dormant} />
+                                        )}
                                     </div>
                                     <Link
                                         className="flex items-center gap-1 text-sm font-medium text-emerald-800 md:col-span-2 md:justify-end"
                                         href={`/accounts/${account.id}`}
                                         aria-label={`View ${account.customer_name}`}
                                     >
-                                        View account <ArrowUpRight aria-hidden className="size-4" />
+                                        {account.deleted_at ? 'View history' : 'View account'} <ArrowUpRight aria-hidden className="size-4" />
                                     </Link>
                                 </li>
                             ))}
@@ -147,12 +165,24 @@ export default function Accounts({
                     </>
                 ) : (
                     <div className="p-12 text-center">
-                        <h3 className="font-semibold">{search ? 'No matching accounts' : 'Your first customer starts here'}</h3>
+                        <h3 className="font-semibold">
+                            {search ? 'No matching accounts' : view === 'archived' ? 'No archived accounts' : 'Your first customer starts here'}
+                        </h3>
                         <p className="mt-2 text-sm text-slate-500">
-                            {search ? 'Try another name or account number.' : 'Create an account to begin recording transactions.'}
+                            {search
+                                ? 'Try another name or account number.'
+                                : view === 'archived'
+                                  ? 'Deleted accounts will appear here with their retained history.'
+                                  : 'Create an account to begin recording transactions.'}
                         </p>
-                        <Button variant="outline" className="mt-5" onClick={() => (search ? router.get('/accounts') : setOpen(true))}>
-                            {search ? 'Clear search' : 'Create account'}
+                        <Button
+                            variant="outline"
+                            className="mt-5"
+                            onClick={() =>
+                                search ? router.get('/accounts', { view }) : view === 'archived' ? router.get('/accounts') : setOpen(true)
+                            }
+                        >
+                            {search ? 'Clear search' : view === 'archived' ? 'View open accounts' : 'Create account'}
                         </Button>
                     </div>
                 )}

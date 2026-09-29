@@ -11,6 +11,7 @@ export type Account = {
     dormant: boolean;
     last_activity_at: string | null;
     created_at: string;
+    deleted_at: string | null;
     deletion_reason: string | null;
 };
 export type PageData<T> = {

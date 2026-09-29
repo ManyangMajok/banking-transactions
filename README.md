@@ -11,6 +11,8 @@ A staff-operated banking assessment built with Laravel, React, TypeScript, Inert
 - Disburse a single fixed KES 10,000 demo loan per account, with linked outstanding debt.
 - Search and paginate accounts, review transaction history, confirm operations and reconcile balances.
 
+To find deleted accounts, choose **Archived accounts** on the account directory, search by name or account number, then choose **View history**. Archived details show the deletion date and retained transaction history in read-only mode. Deletion does not erase transactions. The seeded Dalia account has no money movements, so its archived history is empty.
+
 ## Prerequisites and verified stack
 
 PHP 8.4.20 (64-bit, including pdo_mysql, mbstring, openssl, fileinfo, XML and zip), Composer 2.9.3, Node 22.16.0 and npm 10.9.2 were available on the build machine. The official packaged `laravel/react-starter-kit` v1.0.1 provides the foundation. Locked versions include Laravel 12.69.2, Inertia Laravel 2.0.28, React 19.0.0, Inertia React 2.0.3 and Tailwind 4.0.8. Laravel 12 remains in its security-support period; see the [official support policy](https://laravel.com/docs/12.x/releases).
