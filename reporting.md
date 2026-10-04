@@ -3,10 +3,10 @@
 ## Current state
 - Last updated: 2026-10-04 (Africa/Nairobi)
 - Current milestone: D10 — authorized GitHub publication and presentation handoff
-- Overall state: code verified locally; publication in progress; candidate recording pending
+- Overall state: code verified locally and published publicly; candidate recording pending
 - Branch: main
-- Working tree changes: professional branding and presentation documentation prepared for publication
-- Next action: push to the user-authorized public repository and verify access
+- Published implementation: f48fde3 (professional branding and presentation walkthrough)
+- Next action: candidate presentation and recording; inspect GitHub Actions for remote verification
 - Blocking inputs: none for publication; the candidate must record and submit their own video
 ## Environment
 | Component | Actual version / evidence |
@@ -87,7 +87,7 @@ Track T01–T17 and each concurrency scenario from the build plan.
 
 ## Submission state
 - Code: implemented and locally verified
-- Repository: publication authorized and in progress
+- Repository: published; anonymous access verified on 2026-10-04
 - Repository URL: https://github.com/ManyangMajok/banking-transactions
 - Video: not_recorded
 - Application submission: not_submitted
@@ -192,3 +192,8 @@ Track T01–T17 and each concurrency scenario from the build plan.
 - Added docs/presentation-walkthrough.md with exact operations, expected balances, client-facing explanations and recording caveats. Updated README clone URL and bonus-feature wording. Corrected the recording guide: the employer's supplied instructions do not impose a duration or 100 MB file-size limit.
 - Updated this report's stale summary and deliverable tracker; historical evidence entries remain preserved. Clean-clone browser acceptance and the candidate's video remain distinct unfinished items.
 - Publication review: only example environment files occur in Git history; actual .env files, credentials in runtime files, MySQL data, dependencies and generated builds are ignored. Tracked local example passwords are documented assessment defaults, not personal credentials. Previously captured screenshots use fictional assessment records. The unrelated untracked accounts-desktop.png is not included in this publication commit.
+### 2026-10-04 — public repository verification — completed
+- Commit f48fde3 pushed successfully to origin/main at https://github.com/ManyangMajok/banking-transactions. `git ls-remote origin refs/heads/main` matched local HEAD exactly.
+- Anonymous GitHub API request (no authorization header) returned HTTP 200, private=false, default_branch=main. Public source access is verified; no website deployment is implied.
+- GitHub Actions checks run 37196579997 and dependency-audit run 37196580016 were in progress at this check. Remote CI success is not yet claimed.
+- App remains running at http://127.0.0.1:8000 for the candidate's presentation. Recording and employer submission remain the candidate's responsibility.
