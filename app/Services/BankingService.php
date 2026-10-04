@@ -28,7 +28,7 @@ class BankingService
             $minor = 1000000;
         }
         if ($minor <= 0 || $minor > config('banking.limit_minor')) {
-            $this->reject('Amount exceeds the demo operation limit.');
+            $this->reject('Amount exceeds the transaction limit.');
         }
         $key = strtolower($key);
         $hash = hash('sha256', implode('|', [$type, $actor, $source ?? '-', $destination ?? '-', $minor]));
@@ -54,10 +54,10 @@ class BankingService
                     $this->reject('Insufficient available balance.');
                 }
                 if ($destination !== null && $accounts[$destination]->balance_minor > config('banking.limit_minor') - $minor) {
-                    $this->reject('The recipient would exceed the demo balance limit.');
+                    $this->reject('The recipient would exceed the account balance limit.');
                 }
                 if ($type === 'loan_disbursement' && Loan::where('bank_account_id', $destination)->exists()) {
-                    $this->reject('This account has already received its one demo loan.');
+                    $this->reject('This account has already received its permitted loan.');
                 }
                 $timestamp = now();
                 if ($source !== null) {

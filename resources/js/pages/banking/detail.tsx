@@ -74,7 +74,7 @@ export default function Detail({
                     )}
                 </section>
                 <section className="rounded-xl border bg-white p-6">
-                    <h2 className="font-semibold">Demo loan</h2>
+                    <h2 className="font-semibold">Loan account</h2>
                     {loan ? (
                         <>
                             <p className="mt-4 text-xs break-all text-slate-500">{loan.loan_number}</p>
@@ -85,7 +85,7 @@ export default function Detail({
                                 <br />
                                 Disbursed {date(loan.disbursed_at)} EAT
                                 <br />
-                                One demo loan per account. No repayments.
+                                One loan account per bank account.
                             </p>
                         </>
                     ) : account.deleted_at ? (
@@ -94,7 +94,7 @@ export default function Detail({
                         <>
                             <p className="mt-4 text-2xl font-semibold tabular-nums">KES 10,000.00</p>
                             <p className="mt-3 mb-6 text-sm leading-6 text-pretty text-slate-500">
-                                A single fixed disbursement into this account. An equal outstanding debt is recorded.
+                                Create a linked loan account and disburse KES 10,000.00 into this bank account.
                             </p>
                             <Operation kind="loan" account={account} recipients={recipients} />
                         </>
@@ -126,7 +126,7 @@ export default function Detail({
                                                 {t.type.replaceAll('_', ' ')} · {outgoing ? 'Outgoing' : 'Incoming'}
                                             </p>
                                             <p className="mt-1 text-xs text-slate-500">
-                                                {counterparty ? `${outgoing ? 'To' : 'From'} ${counterparty.customer_name}` : 'Staff banking desk'} ·{' '}
+                                                {counterparty ? `${outgoing ? 'To' : 'From'} ${counterparty.customer_name}` : 'Branch transaction'} ·{' '}
                                                 {date(t.created_at)} EAT
                                             </p>
                                             <p className="mt-2 text-xs break-all text-slate-400">{t.reference}</p>

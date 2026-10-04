@@ -59,7 +59,7 @@ export default function Operation({
 }) {
     const [open, setOpen] = useState(false);
     const [confirm, setConfirm] = useState(false);
-    const label = { deposit: 'Deposit', withdrawal: 'Withdraw', transfer: 'Transfer', loan: 'Create loan' }[kind];
+    const label = { deposit: 'Deposit', withdrawal: 'Withdraw', transfer: 'Transfer', loan: 'Create loan account' }[kind];
     const form = useForm({
         amount: '',
         source_account_id: account.id,
@@ -71,7 +71,7 @@ export default function Operation({
     const parsedDisplay = /^\d+(\.\d{1,2})?$/.test(form.data.amount) ? money(Number(form.data.amount) * 100) : form.data.amount;
     const description =
         kind === 'loan'
-            ? `Credit exactly KES 10,000.00 to ${account.customer_name}. This creates KES 10,000.00 of outstanding debt. Only one demo loan is allowed; repayment is not included.`
+            ? `Create a linked loan account and credit KES 10,000.00 to ${account.customer_name}. This creates KES 10,000.00 of outstanding debt. One loan account is permitted per bank account.`
             : `${label} ${parsedDisplay} ${kind === 'withdrawal' ? 'from' : 'to'} ${kind === 'transfer' ? `${recipient?.customer_name} (${recipient?.account_number})` : `${account.customer_name} (${account.account_number})`}.`;
     const submit = () => {
         const url =
@@ -108,7 +108,7 @@ export default function Operation({
                 <DialogTitle>{label}</DialogTitle>
                 <DialogDescription>
                     {kind === 'loan'
-                        ? 'A fixed loan of KES 10,000.00, paid directly into this account.'
+                        ? 'Create a loan account with a KES 10,000.00 principal and disburse the funds into this bank account.'
                         : `Record a ${kind} for ${account.customer_name}. All amounts are in KES.`}
                 </DialogDescription>
                 <form
@@ -176,7 +176,7 @@ export default function Operation({
                         {form.processing ? 'Processing…' : 'Review operation'}
                     </Button>
                     <p className="text-xs text-slate-500">
-                        If a request is interrupted, retry this form. Its operation key is retained until success.
+                        If a request is interrupted, retry this form. The same request will not be processed twice.
                     </p>
                 </form>
                 <Confirmation

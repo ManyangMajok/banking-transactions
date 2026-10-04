@@ -6,7 +6,7 @@ The candidate must personally explain and record the implementation. No candidat
 
 Open https://webcamera.io/ as requested by the employer. Make a short camera/audio test, play it back and check legibility. Confirm whether the tool offers screen capture in your browser; camera recording alone may not show the application. If screen capture is unavailable, clarify the employer's acceptable recording method. Do not assume a screen recording succeeded. Camera/microphone permissions and the actual recording are the candidate's steps.
 
-Keep passwords, environment files, personal tabs and unrelated databases off screen. Use only the fictional seeded customers. Target a concise 5–8 minute explanation and verify the final playable file is below 100 MB. If compressed, play the compressed result and check audio and code readability.
+Keep passwords, environment files, personal tabs and unrelated databases off screen. Use only the fictional seeded customers. Aim for a concise 6–8 minute explanation; the supplied employer instructions specify no duration or file-size limit. If compressed, play the compressed result and check audio and code readability.
 
 ## Explain the actual implementation
 

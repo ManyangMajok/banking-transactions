@@ -88,7 +88,7 @@ export default function Accounts({
                         <Wallet aria-hidden className="size-5" />
                     </div>
                     <p className="text-3xl font-semibold tabular-nums">{money(summary.balance_minor)}</p>
-                    <p className="mt-2 text-xs text-slate-500">Simulated funds across open accounts</p>
+                    <p className="mt-2 text-xs text-slate-500">Combined available balance across open accounts</p>
                 </div>
             </div>
             <section className="overflow-hidden rounded-xl border bg-white" aria-label="Customer account directory">

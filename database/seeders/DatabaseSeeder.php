@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         DB::transaction(function () {
-            $staff = User::firstOrCreate(['email' => 'staff@example.test'], ['name' => 'Demo Staff', 'password' => Hash::make('DemoBanking!2026'), 'email_verified_at' => now()]);
+            $staff = User::firstOrCreate(['email' => 'staff@example.test'], ['name' => 'Banking Officer', 'password' => Hash::make('DemoBanking!2026'), 'email_verified_at' => now()]);
             $names = ['Amara Njeri', 'Brian Otieno', 'Chao Mwangi', 'Dalia Wanjiku', 'Eli Kamau', 'Farah Achieng'];
             foreach ($names as $i => $name) {
                 $number = 'KE-DEMO-'.str_pad((string) ($i + 1), 6, '0', STR_PAD_LEFT);

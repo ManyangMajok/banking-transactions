@@ -9,7 +9,7 @@ declare global {
     const route: typeof routeFn;
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'Kijani Banking';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -24,5 +24,5 @@ createInertiaApp({
     },
 });
 
-// The banking demo uses one consistent light theme.
+// The banking interface uses one consistent light theme.
 document.documentElement.classList.remove('dark');

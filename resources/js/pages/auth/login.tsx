@@ -36,7 +36,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     return (
-        <AuthLayout title="Kijani Banking desk" description="Sign in to the staff workspace">
+        <AuthLayout title="Kijani Banking" description="Sign in to manage accounts and transactions">
             <Head title="Log in" />
 
             <form className="flex flex-col gap-6" onSubmit={submit}>
@@ -93,7 +93,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     </Button>
                 </div>
 
-                <p className="text-center text-sm text-slate-500">Staff access only · Fictional data and simulated money</p>
+                <p className="text-center text-sm text-slate-500">Authorized staff access only</p>
             </form>
 
             {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}

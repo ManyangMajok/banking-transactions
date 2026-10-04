@@ -1,39 +1,38 @@
 # Banking Project Progress Report
 
 ## Current state
-- Last updated: 2026-09-28 12:22 UTC
-- Current milestone: D08
-- Overall state: in_progress
-- Branch / latest verified commit: not yet known
-- Working tree changes: specification only; no Git repository
-- Next action: finish browser verification, documentation and clean installation
-- Blocking inputs: none identified
-
+- Last updated: 2026-10-04 (Africa/Nairobi)
+- Current milestone: D10 — authorized GitHub publication and presentation handoff
+- Overall state: code verified locally; publication in progress; candidate recording pending
+- Branch: main
+- Working tree changes: professional branding and presentation documentation prepared for publication
+- Next action: push to the user-authorized public repository and verify access
+- Blocking inputs: none for publication; the candidate must record and submit their own video
 ## Environment
 | Component | Actual version / evidence |
 |---|---|
-| PHP / Composer | not yet checked |
-| Laravel | not yet checked |
-| Node / package manager | not yet checked |
-| React / Inertia | not yet checked |
-| MySQL / engine | not yet checked |
-| Test database isolation | not yet checked |
+| PHP / Composer | PHP 8.4.20 / Composer 2.9.3 |
+| Laravel | 12.69.2 |
+| Node / package manager | Node 22.16.0 / npm 10.9.2 |
+| React / Inertia | React 19.0.0 / Inertia React 2.0.3 / inertia-laravel 2.0.28 |
+| MySQL / engine | MySQL 8.4.11 / InnoDB; isolated local port 3307 |
+| Test database isolation | banking_test enforced by application guard and separate database user |
 
 ## Deliverable tracker
 Allowed status: not_started, in_progress, blocked, needs_correction, completed.
 | ID | Deliverable | Status | Evidence record | Open defect IDs |
 |---|---|---|---|---|
 | D00 | Audit and reporting | completed | — | — |
-| D01 | Foundation and authentication | not_started | — | — |
-| D02 | Schema, money and seed data | not_started | — | — |
-| D03 | Account creation and views | not_started | — | — |
-| D04 | Deposits and withdrawals | not_started | — | — |
-| D05 | Transfers | not_started | — | — |
-| D06 | Dormancy and deletion | not_started | — | — |
-| D07 | Loan disbursement | not_started | — | — |
-| D08 | UI and verification | in_progress | — | — |
-| D09 | Documentation and clean clone | not_started | — | — |
-| D10 | Publication and handoff | not_started | — | — |
+| D01 | Foundation and authentication | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D02 | Schema, money and seed data | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D03 | Account creation and views | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D04 | Deposits and withdrawals | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D05 | Transfers | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D06 | Dormancy and deletion | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D07 | Loan disbursement | completed | MySQL acceptance and 2026-10-04 full-suite verification | — |
+| D08 | UI and verification | completed | Prior UI inspection, user-confirmed 12 flows, 2026-10-04 automated checks | — |
+| D09 | Documentation and clean clone | in_progress | Installation and migration evidence recorded; full clean-clone browser acceptance remains unconfirmed | — |
+| D10 | Publication and handoff | in_progress | Publication authorized 2026-10-04; personal video pending | — |
 
 ## Deliverable evidence log
 ### [Timestamp] Dxx — title — status
@@ -87,9 +86,9 @@ Track T01–T17 and each concurrency scenario from the build plan.
 - [ ] Remaining limitations explicitly disclosed
 
 ## Submission state
-- Code: not_started
-- Repository: not_published
-- Repository URL: not yet available
+- Code: implemented and locally verified
+- Repository: publication authorized and in progress
+- Repository URL: https://github.com/ManyangMajok/banking-transactions
 - Video: not_recorded
 - Application submission: not_submitted
 
@@ -179,3 +178,17 @@ Track T01–T17 and each concurrency scenario from the build plan.
 - `php vendor/bin/pint`: passed; `npm run types`: passed; `npm run build`: passed (2035 modules). No development reset or customer movement performed.
 - Read-only live check: Dalia id=4, deleted_at=2026-09-29T08:12:39Z, balance=0, transaction count=0. Her seeded account never had money movements. `php artisan banking:reconcile`: zero mismatches including archived accounts.
 - User-reported completion of all 12 manual checks retained above; archived-history UI is new in this correction.
+
+### 2026-09-29 — professional interface wording — in_progress
+- User requested removal of demo/simulation presentation. Update screen copy, loan-account terminology, validation messages and starter branding. Preserve financial behavior, existing account identifiers, credentials and historical records; technical scope documentation remains accurate.
+- Completed presentation changes: banking terminology, linked loan-account wording, validation messages, staff display label, starter navigation/logo replacement and banking browser icon. Existing identifiers, credentials and financial records preserved. Technical documentation remains accurate.
+- Validation: frontend build, TypeScript, ESLint and Pint passed. Source scan found no demo/simulated/fictional wording in resources/js or app/Services. Balance reconciliation after the staff display-name update reported zero mismatches.
+
+### 2026-10-04 — presentation startup and publication — in_progress
+- User explicitly authorized starting the app and pushing to https://github.com/ManyangMajok/banking-transactions.git. GitHub CLI confirmed that ManyangMajok is the active authenticated account; target repository is public and has no branches.
+- Started scripts/start-local.ps1 in a hidden background process. GET http://127.0.0.1:8000/login returned HTTP 200. The compiled frontend is served with Laravel; a separate Vite server is unnecessary for presenting.
+- `php artisan test`: exit 0, 41 tests / 277 assertions passed on MySQL 8.4.11. `php scripts/concurrency.php`: exit 0, all six scenarios and reconciliation passed. `php artisan banking:reconcile`: exit 0, zero mismatches.
+- Created a separate local fixture named Presentation Dormant Account, zero balance, creation timestamp 13 months ago, no debt and no transactions, to demonstrate eligible deletion. The original archived Dalia account and other records were preserved. This is prepared test data; the walkthrough explicitly discloses the timestamp setup.
+- Added docs/presentation-walkthrough.md with exact operations, expected balances, client-facing explanations and recording caveats. Updated README clone URL and bonus-feature wording. Corrected the recording guide: the employer's supplied instructions do not impose a duration or 100 MB file-size limit.
+- Updated this report's stale summary and deliverable tracker; historical evidence entries remain preserved. Clean-clone browser acceptance and the candidate's video remain distinct unfinished items.
+- Publication review: only example environment files occur in Git history; actual .env files, credentials in runtime files, MySQL data, dependencies and generated builds are ignored. Tracked local example passwords are documented assessment defaults, not personal credentials. Previously captured screenshots use fictional assessment records. The unrelated untracked accounts-desktop.png is not included in this publication commit.

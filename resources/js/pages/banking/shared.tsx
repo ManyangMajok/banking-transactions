@@ -41,7 +41,7 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
                             <Landmark aria-hidden className="size-6" />
                         </span>
                         <span className="text-xl font-semibold">
-                            Kijani<span className="ml-2 text-sm font-normal text-slate-500">Banking desk</span>
+                            Kijani<span className="ml-2 text-sm font-normal text-slate-500">Banking</span>
                         </span>
                     </Link>
                     <div className="flex items-center gap-4 text-sm">
@@ -54,8 +54,8 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
             </header>
             <main id="main" className="mx-auto max-w-7xl px-5 py-8 sm:px-8 sm:py-10">
                 <div className="mb-8 flex items-center gap-2 text-xs font-medium text-slate-600">
-                    <ShieldCheck className="size-4 text-emerald-800" aria-hidden /> STAFF WORKSPACE <span className="mx-1 text-slate-300">/</span>{' '}
-                    SIMULATED MONEY
+                    <ShieldCheck className="size-4 text-emerald-800" aria-hidden /> BANKING OPERATIONS <span className="mx-1 text-slate-300">/</span>{' '}
+                    ACCOUNT MANAGEMENT
                 </div>
                 {flash.success && (
                     <div role="status" className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm break-words text-emerald-950">
@@ -65,7 +65,7 @@ export function Shell({ title, children }: { title: string; children: ReactNode 
                 {children}
             </main>
             <footer className="mx-auto max-w-7xl px-5 py-8 text-xs text-slate-500 sm:px-8">
-                Fictional customer data · KES only · Times shown in Africa/Nairobi (EAT)
+                Kijani Banking · All amounts in KES · Africa/Nairobi (EAT)
             </footer>
         </div>
     );

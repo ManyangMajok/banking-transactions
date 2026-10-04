@@ -8,7 +8,7 @@ A staff-operated banking assessment built with Laravel, React, TypeScript, Inert
 - Deposit and withdraw KES, including cents, without overdrafts.
 - Transfer between accounts atomically with one shared transaction reference.
 - Soft-delete eligible dormant accounts while retaining all historical records.
-- Disburse a single fixed KES 10,000 demo loan per account, with linked outstanding debt.
+- Create one linked loan account and disburse a fixed KES 10,000, with recorded outstanding debt.
 - Search and paginate accounts, review transaction history, confirm operations and reconcile balances.
 
 To find deleted accounts, choose **Archived accounts** on the account directory, search by name or account number, then choose **View history**. Archived details show the deletion date and retained transaction history in read-only mode. Deletion does not erase transactions. The seeded Dalia account has no money movements, so its archived history is empty.
@@ -23,7 +23,7 @@ On the prepared Windows workspace, MySQL **8.4.11** lives in ignored `.runtime/`
 
 ## Install from a fresh checkout
 
-1. Obtain this repository locally, then open a terminal in its root. Public publication is pending authorization; no public clone URL is fabricated.
+1. Clone `https://github.com/ManyangMajok/banking-transactions.git`, then open a terminal in the repository root.
 2. Install locked dependencies:
 
    ```sh
@@ -106,3 +106,5 @@ Demo: create A/B; deposit 5,000 into A; withdraw 1,000; transfer 1,500 to B; ver
 There are no real payments, customer self-service, KYC, multi-currency, complex roles, loan repayments or production security/compliance claims. Staff password recovery uses the local log mailer. This assessment is not internet-ready financial infrastructure. The shared XAMPP database issue is outside the application's schema and was not repaired.
 
 See [the build specification](docs/BUILD_PLAN.md), [progress and defect evidence](reporting.md), and [the candidate recording guide](docs/recording-guide.md). Screenshots, when captured, are in `docs/screenshots/`. Publication, the candidate's personally explained video and application submission remain separate from local code verification.
+
+For the exact presentation sequence, expected balances and explanations, see [the presentation walkthrough](docs/presentation-walkthrough.md).
